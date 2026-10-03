@@ -1,51 +1,57 @@
-# 👁️ Shile — Minecraft Fabric 26.2 Korku Modu
+# Shile
 
-> *"Arkana bakma... O zaten seni izliyor."*
+> "Whatever you do, do not look at Shile."
 
-**Shile**, Minecraft oyuncusunun arkasında sinsice ortaya çıkan, dairesel bir yörünge izleyerek oyuncunun önüne geçmeye çalışan ve bakış açısıyla tetiklenen gerilim odaklı bir istemci-sunucu (client-server) korku modudur.
-
----
-
-## 📖 Konsept ve İlham Kaynağı
-Shile, temel ilhamını Roblox DOORS içerisindeki **Alma** varlığından almaktadır. Ancak kendine has dairesel hareket matematiği, bakış odaklı Quick-Time Event (QTE) mini oyunu ve sunucu otoritesine sahip ani ölüm mekaniğiyle özgün bir Minecraft deneyimi sunar.
+**Shile** is an atmospheric client-server horror mod for Minecraft (Fabric 26.2). A stealthy entity appears behind the player, moving along an orbital trajectory to reach their front. Looking directly at Shile triggers a mandatory, high-stakes Quick-Time Event (QTE).
 
 ---
 
-## ⚙️ Temel Mekanikler
+## Concept
 
-1. **Sinsi Ortaya Çıkış:**
-   * Shile, oyuncunun tam arkasında yaklaşık 2 blok mesafede belirir.
-   * Oyuncuya doğrudan yaklaşmaz veya aniden önüne ışınlanmaz.
-
-2. **Dairesel Yörünge (6 saniye / 360°):**
-   * Oyuncunun etrafında dairesel bir yay izleyerek en kısa yoldan (saat yönü veya tersi) oyuncunun önüne geçmeye çalışır.
-   * Açısal hız: $60^\circ/\text{saniye}$ ($\frac{\pi}{3}\text{ rad/s}$).
-
-3. **Bakış Algılama (POV Raycast):**
-   * Oyuncu Shile'a aralıksız $1.0\text{ saniye}$ ($20\text{ tick}$) boyunca doğrudan bakarsa zorunlu mini oyun tetiklenir.
-   * Bloklar görüşü engellerse bakış sayacı sıfırlanır.
-
-4. **QTE Mini Oyunu:**
-   * Ekranda beliren tüm açık Minecraft arayüzleri kapatılır.
-   * Rastgele konumlarda klavye harfleri ($A-Z$) belirir.
-   * Oyuncunun her tuş için yalnızca $1.0\text{ saniyesi}$ vardır.
-   * Oyuncu $15.0\text{ saniye}$ boyunca zamanında doğru tuşlara basarak hayatta kalmalıdır.
-
-5. **Sunucu Otoritesi ve Ani Ölüm:**
-   * Yanlış tuşa basılması veya süre aşımı durumunda sunucu oyuncuyu anında cezalandırır (ani ölüm).
-   * 15 saniye dayanıldığında Shile kaybolur ve 8–25 dakika arası rastgele bekleme süresi (cooldown) başlar.
+Inspired by the entity Alma from Roblox DOORS, Shile introduces psychological tension into Minecraft. Shile does not rush or jump-scare the player. Instead, it slowly circles around the player, attempting to get into their line of sight. The player must actively avoid looking at Shile until the encounter ends.
 
 ---
 
-## 🛠️ Teknik Özellikler ve Mimari
+## Core Mechanics
 
-* **Platform:** Fabric 26.2
-* **Java:** 21+
-* **Ağ Protokolü:** Modern Fabric `CustomPacketPayload` (Type-safe records & StreamCodec)
-* **Görselleştirme:** Hafif istemci projeksiyonu (`WorldRenderEvents` billboard quad) — Çok oyunculu sunucularda sıfır mob yükü ve diğer oyuncuların göremeyeceği tam gizlilik.
+### 1. Stealthy Spawn
+- Spawns directly behind the player at an approximate radius of 2 blocks.
+- Accompanied by an unsettling audio cue.
+- Remains active for a 30-second encounter window unless the mini-game is triggered.
+
+### 2. Orbital Trajectory (60 deg/sec)
+- Circles around the player at a fixed 2-block radius.
+- Always chooses the shortest angular path (clockwise or counter-clockwise) to reach the player's front.
+- Trajectory updates dynamically based on the player's orientation.
+
+### 3. Gaze Detection (POV Raycasting)
+- The core threat is looking at Shile.
+- If the player maintains direct, uninterrupted eye contact with Shile for 1.0 second (20 ticks), the mandatory QTE mini-game begins.
+- Block occlusions and obstructions break line-of-sight and reset the continuous gaze timer.
+
+### 4. QTE Mini-Game
+- All open game menus and screens are immediately closed.
+- Random letters (A-Z) appear at non-edge screen coordinates.
+- The player has 1.0 second per key to press the corresponding letter.
+- Player movement (WASD/Jump) is locked, while mouse look remains functional.
+- The player must survive for 15.0 continuous seconds.
+
+### 5. Server Authority and Sudden Death
+- Missing a key or pressing the incorrect key instantly triggers server-authoritative death.
+- Successfully surviving the 15-second duration dispels Shile.
+- Once dispelled, an 8 to 25-minute random cooldown begins.
 
 ---
 
-## 👨‍💻 Geliştirici & Lisans
-* **Geliştirici:** seezzalith
-* **Proje Durumu:** Aktif Geliştirme (Faz 1)
+## Technical Architecture
+
+- Target Platform: Minecraft 26.2 (Fabric)
+- Language / Toolchain: Java 21, Fabric Loom
+- Networking: Type-safe CustomPacketPayload (records and stream codecs)
+- Rendering: Lightweight client-side billboard quad projection (WorldRenderEvents). Shile is not a physical server mob, ensuring zero server lag and complete exclusivity to the target player.
+
+---
+
+## Developer
+- Author: seezzalith
+- Status: Active Development (Phase 1)
