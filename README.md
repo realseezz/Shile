@@ -1,4 +1,4 @@
-# 👁️ Shile — Minecraft Fabric 26.2 Korku Modu
+# Shile — Minecraft Fabric 26.2 Korku Modu
 
 > *"Arkana bakma... O zaten seni izliyor."*
 
@@ -6,12 +6,12 @@
 
 ---
 
-## 📖 Konsept ve İlham Kaynağı
+## Konsept ve İlham Kaynağı
 Shile, temel ilhamını Roblox DOORS içerisindeki **Alma** varlığından almaktadır. Ancak kendine has dairesel hareket matematiği, bakış odaklı Quick-Time Event (QTE) mini oyunu ve sunucu otoritesine sahip ani ölüm mekaniğiyle özgün bir Minecraft deneyimi sunar.
 
 ---
 
-## ⚙️ Temel Mekanikler
+## Temel Mekanikler
 
 1. **Sinsi Ortaya Çıkış:**
    * Shile, oyuncunun tam arkasında yaklaşık 2 blok mesafede belirir.
@@ -37,7 +37,7 @@ Shile, temel ilhamını Roblox DOORS içerisindeki **Alma** varlığından almak
 
 ---
 
-## 🛠️ Teknik Özellikler ve Mimari
+## Teknik Özellikler ve Mimari
 
 * **Platform:** Fabric 26.2
 * **Java:** 21+
@@ -46,6 +46,6 @@ Shile, temel ilhamını Roblox DOORS içerisindeki **Alma** varlığından almak
 
 ---
 
-## 👨‍💻 Geliştirici & Lisans
+## Geliştirici & Lisans
 * **Geliştirici:** seezzalith
 * **Proje Durumu:** Aktif Geliştirme (Faz 1)
