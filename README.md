@@ -53,5 +53,5 @@ Inspired by the entity Alma from Roblox DOORS, Shile introduces psychological te
 ---
 
 ## Developer
-- Author: seezzalith
+- Author: realseezz
 - Status: Active Development (Phase 1)

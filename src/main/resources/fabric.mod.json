@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"id": "shile",
+	"version": "${version}",
+	"name": "Shile",
+	"description": "Atmospheric client-server horror mod. Phase 1: command prototype.",
+	"authors": ["realseezz"],
+	"contact": {
+		"sources": "https://github.com/realseezz/Shile"
+	},
+	"license": "All-Rights-Reserved",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["com.realseezz.shile.ShileMod"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
