@@ -10,13 +10,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.permissions.Permissions;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import com.realseezz.shile.common.ShileState;
+import com.realseezz.shile.common.network.ShileSpawnedPacket;
+import com.realseezz.shile.server.ShileManager;
 import com.realseezz.shile.server.ShilePlayerState;
-import com.realseezz.shile.server.ShileServerManager;
 
 /**
- * /shile komut ağacı. Komutlar artık server tarafındaki gerçek Shile durumunu değiştirir,
+ * /shile komut ağacı. Komutlar server tarafındaki gerçek Shile durumunu değiştirir,
  * ama henüz görsel, ses, hareket ve sayaç yoktur.
  */
 public final class ShileCommands {
@@ -33,6 +35,7 @@ public final class ShileCommands {
 				.then(Commands.literal("despawn").executes(ShileCommands::despawn))
 				.then(Commands.literal("reset").executes(ShileCommands::reset))
 				.then(Commands.literal("status").executes(ShileCommands::status))
+				.then(Commands.literal("nettest").executes(ShileCommands::netTest))
 				.then(Commands.literal("help").executes(ShileCommands::help))
 			));
 	}
@@ -69,6 +72,14 @@ public final class ShileCommands {
 		return reply(context, "Shile durumu: " + state.state().label() + ".");
 	}
 
+	/** GEÇİCİ: ağ temelini sınar. Server paketi gönderir, client cevap verir, server sohbete yazar. */
+	private static int netTest(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		ServerPlayer player = context.getSource().getPlayerOrException();
+		ServerPlayNetworking.send(player,
+			new ShileSpawnedPacket(player.getUUID(), player.blockPosition(), player.getDirection()));
+		return reply(context, "Ağ testi paketi gönderildi, cevap bekleniyor...");
+	}
+
 	private static int help(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 		return reply(context, String.join("\n",
 			"Shile komutları:",
@@ -76,6 +87,7 @@ public final class ShileCommands {
 			"/shile despawn - Süren Shile'ı kaldırır (cooldown başlatmaz)",
 			"/shile reset - Olay ve cooldown dahil her şeyi sıfırlar",
 			"/shile status - Durumu gösterir",
+			"/shile nettest - Ağ testi (geçici)",
 			"/shile help - Bu liste"));
 	}
 
@@ -85,7 +97,7 @@ public final class ShileCommands {
 	 */
 	private static ShilePlayerState stateOf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 		ServerPlayer player = context.getSource().getPlayerOrException();
-		return ShileServerManager.get(player.getUUID());
+		return ShileManager.get(player.getUUID());
 	}
 
 	private static int reply(CommandContext<CommandSourceStack> context, String message) throws CommandSyntaxException {

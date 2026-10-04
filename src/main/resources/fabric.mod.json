@@ -3,7 +3,7 @@
 	"id": "shile",
 	"version": "${version}",
 	"name": "Shile",
-	"description": "Atmospheric client-server horror mod. Phase 1: command prototype.",
+	"description": "Atmospheric client-server horror mod.",
 	"authors": ["realseezz"],
 	"contact": {
 		"sources": "https://github.com/realseezz/Shile"
@@ -11,7 +11,8 @@
 	"license": "All-Rights-Reserved",
 	"environment": "*",
 	"entrypoints": {
-		"main": ["com.realseezz.shile.ShileMod"]
+		"main": ["com.realseezz.shile.ShileMod"],
+		"client": ["com.realseezz.shile.client.ShileClientMod"]
 	},
 	"depends": {
 		"fabricloader": ">=0.19.3",

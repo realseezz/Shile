@@ -1,12 +1,12 @@
 package com.realseezz.shile.server;
 
-import com.realseezz.shile.ShileConstants;
+import com.realseezz.shile.common.ShileConstants;
 import com.realseezz.shile.common.ShileState;
 
 /**
  * Tek bir oyuncunun server tarafındaki Shile durumu.
  *
- * Bu adımda sayaçlar (olay süresi, cooldown) yalnızca alan olarak durur;
+ * Sayaçlar (olay süresi, cooldown) şimdilik yalnızca alan olarak durur;
  * her tick azaltılmaları sonraki adımda bağlanacak.
  */
 public final class ShilePlayerState {
@@ -15,7 +15,7 @@ public final class ShilePlayerState {
 	/** Yalnızca ACTIVE iken anlamlı. */
 	private int eventTicksRemaining;
 
-	/** Yalnızca COOLDOWN iken anlamlı. */
+	/** Yalnızca COOLDOWN iken anlamlı. Çıkış/girişte kaldığı yerden devam eder. */
 	private int cooldownTicksRemaining;
 
 	public ShileState state() {
@@ -30,7 +30,7 @@ public final class ShilePlayerState {
 		return cooldownTicksRemaining;
 	}
 
-	/** ACTIVE veya MINI_GAME: ekranda/oyunda bir Shile olayı sürüyor. */
+	/** ACTIVE veya MINI_GAME: bir Shile olayı sürüyor. */
 	public boolean isShileActive() {
 		return state == ShileState.ACTIVE || state == ShileState.MINI_GAME;
 	}
@@ -42,6 +42,13 @@ public final class ShilePlayerState {
 		cooldownTicksRemaining = 0;
 	}
 
+	/** Boyut değişince 30 saniyelik olay süresi baştan başlar (yalnızca ACTIVE iken). */
+	public void restartEventTimer() {
+		if (state == ShileState.ACTIVE) {
+			eventTicksRemaining = ShileConstants.EVENT_DURATION_TICKS;
+		}
+	}
+
 	/** Süren Shile olayını cooldown başlatmadan kaldırır (test komutu). */
 	public void endActiveShile() {
 		if (!isShileActive()) {
@@ -51,7 +58,7 @@ public final class ShilePlayerState {
 		eventTicksRemaining = 0;
 	}
 
-	/** Her şeyi (olay ve cooldown) sıfırlar. */
+	/** Her şeyi (olay ve cooldown dahil) sıfırlar. */
 	public void reset() {
 		state = ShileState.IDLE;
 		eventTicksRemaining = 0;

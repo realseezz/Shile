@@ -10,13 +10,13 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
  * Oyuncu UUID'sine göre Shile durumlarını tutar. Yalnızca server thread'inden kullanılır.
  *
  * Durumlar şimdilik yalnızca bellekte durur; server durunca silinir.
- * Cooldown'un çıkış/giriş ve dünya yeniden açılışında korunması (plan 13 ve
- * Antigravity notları) cooldown adımında kalıcı kayıtla eklenecek.
+ * Cooldown'un çıkış/giriş ve dünya yeniden açılışında kaldığı yerden devam etmesi
+ * için kalıcı kayıt cooldown adımında eklenecek.
  */
-public final class ShileServerManager {
+public final class ShileManager {
 	private static final Map<UUID, ShilePlayerState> STATES = new HashMap<>();
 
-	private ShileServerManager() {
+	private ShileManager() {
 	}
 
 	public static void register() {
