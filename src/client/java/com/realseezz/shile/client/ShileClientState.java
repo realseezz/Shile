@@ -1,5 +1,7 @@
 package com.realseezz.shile.client;
 
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
 import com.realseezz.shile.common.ShileConstants;
@@ -9,6 +11,9 @@ import com.realseezz.shile.common.ShileConstants;
  *
  * Hareket tick tabanlıdır (20 tick/sn): her tick açı 60/20 = 3 derece ilerler. Çizim, iki tick
  * arasını yumuşatmak için son tick'ten beri geçen süreye göre ara değer hesaplar.
+ *
+ * Shile aktifken kamera birinci şahısa kilitlenir (F5 veya başka bir yolla değiştirilse de her
+ * tick geri alınır); Shile bitince oyuncunun önceki kamera tipi geri verilir.
  */
 public final class ShileClientState {
 	private static boolean active;
@@ -16,19 +21,29 @@ public final class ShileClientState {
 	private static float orbitYawDeg;
 	private static float prevOrbitYawDeg;
 	private static long lastTickNanos;
+	/** Shile başlamadan önceki kamera tipi (bitince geri verilir). */
+	private static CameraType savedCameraType;
 
 	private ShileClientState() {
 	}
 
 	/** Oyuncunun tam arkasında (180 derece) başlat. */
 	public static void spawnBehind(float playerYawDeg) {
+		if (!active) {
+			savedCameraType = Minecraft.getInstance().options.getCameraType();
+		}
 		active = true;
 		orbitYawDeg = Mth.wrapDegrees(playerYawDeg + 180.0f);
 		prevOrbitYawDeg = orbitYawDeg;
 		lastTickNanos = System.nanoTime();
+		lockFirstPerson();
 	}
 
 	public static void clear() {
+		if (active && savedCameraType != null) {
+			Minecraft.getInstance().options.setCameraType(savedCameraType);
+		}
+		savedCameraType = null;
 		active = false;
 	}
 
@@ -45,6 +60,8 @@ public final class ShileClientState {
 		if (!active) {
 			return;
 		}
+		lockFirstPerson();
+
 		prevOrbitYawDeg = orbitYawDeg;
 
 		float delta = Mth.wrapDegrees(playerYawDeg - orbitYawDeg);
@@ -63,5 +80,13 @@ public final class ShileClientState {
 		double partial = (System.nanoTime() - lastTickNanos) / 50_000_000.0;
 		partial = Math.min(1.0, Math.max(0.0, partial));
 		return prevOrbitYawDeg + Mth.wrapDegrees(orbitYawDeg - prevOrbitYawDeg) * (float) partial;
+	}
+
+	/** Kamera üçüncü şahıssa geri birinci şahısa alır. */
+	private static void lockFirstPerson() {
+		Minecraft client = Minecraft.getInstance();
+		if (!client.options.getCameraType().isFirstPerson()) {
+			client.options.setCameraType(CameraType.FIRST_PERSON);
+		}
 	}
 }

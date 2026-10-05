@@ -81,7 +81,20 @@ public final class ShileCommands {
 	private static int status(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 		ServerPlayer player = context.getSource().getPlayerOrException();
 		ShilePlayerState state = ShileManager.get(player.getUUID());
-		return reply(context, "Shile durumu: " + state.state().label() + ".");
+		return reply(context, "Shile durumu: " + describe(state) + ".");
+	}
+
+	private static String describe(ShilePlayerState state) {
+		return switch (state.state()) {
+			case ACTIVE -> "Aktif (kalan olay süresi: " + ticksToText(state.eventTicksRemaining()) + ")";
+			case COOLDOWN -> "Cooldown (kalan: " + ticksToText(state.cooldownTicksRemaining()) + ")";
+			default -> state.state().label();
+		};
+	}
+
+	private static String ticksToText(int ticks) {
+		int seconds = (ticks + 19) / 20;
+		return seconds >= 60 ? (seconds / 60) + " dk " + (seconds % 60) + " sn" : seconds + " sn";
 	}
 
 	private static int help(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
