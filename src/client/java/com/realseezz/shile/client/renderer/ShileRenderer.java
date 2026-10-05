@@ -74,7 +74,7 @@ public final class ShileRenderer {
 			renderState = null;
 			return;
 		}
-		renderState = new ShileRenderState(ShileClientState.orbitYawDeg(), client.player.getEyeHeight());
+		renderState = new ShileRenderState(ShileClientState.renderYawDeg(), client.player.getEyeHeight());
 	}
 
 	// --- Çizim aşaması ---

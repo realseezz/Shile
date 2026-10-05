@@ -1,8 +1,10 @@
 package com.realseezz.shile.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
@@ -30,6 +32,14 @@ public class ShileClientMod implements ClientModInitializer {
 		// Şimdilik olay bittiğinde (başarılı ya da başarısız) görseli temizler.
 		ClientPlayNetworking.registerGlobalReceiver(MiniGameEndPacket.TYPE,
 			(payload, context) -> ShileClientState.clear());
+
+		// Shile'ın hareketi: her client level tick'inde (oyun duraklatılınca tick durur).
+		ClientTickEvents.END_LEVEL_TICK.register(level -> {
+			LocalPlayer player = Minecraft.getInstance().player;
+			if (player != null) {
+				ShileClientState.tick(player.getYRot());
+			}
+		});
 
 		// Dünyadan çıkınca görsel durum bir sonraki dünyaya sızmasın.
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> ShileClientState.clear());
