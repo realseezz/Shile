@@ -33,6 +33,7 @@ public final class ShileClientState {
 			savedCameraType = Minecraft.getInstance().options.getCameraType();
 		}
 		active = true;
+		GazeDetector.reset();
 		orbitYawDeg = Mth.wrapDegrees(playerYawDeg + 180.0f);
 		prevOrbitYawDeg = orbitYawDeg;
 		lastTickNanos = System.nanoTime();
@@ -45,6 +46,7 @@ public final class ShileClientState {
 		}
 		savedCameraType = null;
 		active = false;
+		GazeDetector.reset();
 	}
 
 	public static boolean isActive() {
@@ -73,6 +75,11 @@ public final class ShileClientState {
 			orbitYawDeg = Mth.wrapDegrees(orbitYawDeg + Math.signum(delta) * step);
 		}
 		lastTickNanos = System.nanoTime();
+	}
+
+	/** Shile'ın o anki (tick sonu) yönü. */
+	public static float orbitYawDeg() {
+		return orbitYawDeg;
 	}
 
 	/** Çizim için yumuşatılmış açı. Oyun duraklatılınca tick durur, açı son değerde kalır. */

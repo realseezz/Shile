@@ -27,6 +27,8 @@ public final class ShileConstants {
 	public static final int EVENT_DURATION_TICKS = 30 * TICKS_PER_SECOND;
 	/** Mini oyunu başlatan kesintisiz bakış süresi (1 saniye). */
 	public static final int LOOK_DURATION_TICKS = 1 * TICKS_PER_SECOND;
+	/** Görüş alanı hesabında varsayılan ekran oranı (16:9). FOV ayarı oyundan okunur. */
+	public static final double ASSUMED_ASPECT_RATIO = 16.0 / 9.0;
 
 	// --- Mini oyun ---
 	public static final int MINI_GAME_MIN_VISIBLE_KEYS = 2;

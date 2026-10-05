@@ -57,6 +57,14 @@ public final class ShilePlayerState {
 		}
 	}
 
+	/** Bakış algılandı: mini oyun başlar, 30 saniyelik olay süresi geçersiz olur (yalnızca ACTIVE iken). */
+	public void startMiniGame() {
+		if (state == ShileState.ACTIVE) {
+			state = ShileState.MINI_GAME;
+			eventTicksRemaining = 0;
+		}
+	}
+
 	/** Olayı bitirip 8-25 dakikalık rastgele cooldown başlatır. */
 	public void startCooldown() {
 		state = ShileState.COOLDOWN;

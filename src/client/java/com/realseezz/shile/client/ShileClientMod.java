@@ -38,6 +38,7 @@ public class ShileClientMod implements ClientModInitializer {
 			LocalPlayer player = Minecraft.getInstance().player;
 			if (player != null) {
 				ShileClientState.tick(player.getYRot());
+				GazeDetector.tick(player);
 			}
 		});
 
