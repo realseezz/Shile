@@ -9,9 +9,6 @@ import com.realseezz.shile.common.ShileConstants;
 
 /** Client -> Server: oyuncu Shile'a bu kadar süre kesintisiz baktı. */
 public record PlayerLookedAtPacket(float lookDuration) implements CustomPacketPayload {
-	/** GEÇİCİ: /shile nettest cevabını ayırt etmek için. Ağ testi bitince kaldırılacak. */
-	public static final float TEST_ECHO = -1.0f;
-
 	public static final CustomPacketPayload.Type<PlayerLookedAtPacket> TYPE =
 		new CustomPacketPayload.Type<>(ShileConstants.id("player_looked_at"));
 

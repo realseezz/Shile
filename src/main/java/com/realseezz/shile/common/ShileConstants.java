@@ -16,6 +16,12 @@ public final class ShileConstants {
 	/** 6 saniyede 360 derece. */
 	public static final double ROTATION_SPEED_DEG_PER_SECOND = 60.0;
 
+	// --- Görünüm (blok cinsinden; PNG boyutundan bağımsız) ---
+	/** Shile'ın çizilen genişliği. */
+	public static final double SHILE_WIDTH_BLOCKS = 1.0;
+	/** Shile'ın çizilen yüksekliği. */
+	public static final double SHILE_HEIGHT_BLOCKS = 2.0;
+
 	// --- Olay süresi ve bakış ---
 	/** Shile çıktıktan sonra 30 saniyelik olay süresi. */
 	public static final int EVENT_DURATION_TICKS = 30 * TICKS_PER_SECOND;
