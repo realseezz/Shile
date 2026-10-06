@@ -47,6 +47,7 @@ public final class ShileClientState {
 		savedCameraType = null;
 		active = false;
 		GazeDetector.reset();
+		MiniGameState.stop();
 	}
 
 	public static boolean isActive() {

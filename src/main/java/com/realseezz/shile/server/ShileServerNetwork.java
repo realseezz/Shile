@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import com.realseezz.shile.common.ShileState;
+import com.realseezz.shile.common.network.MiniGameStartedPacket;
 import com.realseezz.shile.common.network.PlayerLookedAtPacket;
 
 /**
@@ -27,9 +28,12 @@ public final class ShileServerNetwork {
 				return;
 			}
 			state.startMiniGame();
+			// Tuşlar ilgili adımda eklenecek; şimdilik boş liste ile yalnızca "başladı" bilgisi gider.
+			ServerPlayNetworking.send(player, new MiniGameStartedPacket(""));
 			// GEÇİCİ: mini oyun henüz yok.
 			player.sendSystemMessage(Component.literal(
-				"Bakış algılandı. Mini oyun burada başlayacak (henüz yazılmadı). Durum: " + state.state().label() + "."));
+				"Bakış algılandı: mini oyun başladı, açık ekranlar kapatıldı (oyunun kendisi henüz yazılmadı). Durum: "
+					+ state.state().label() + "."));
 		});
 	}
 }
