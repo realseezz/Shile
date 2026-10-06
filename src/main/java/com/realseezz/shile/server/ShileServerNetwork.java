@@ -1,11 +1,14 @@
 package com.realseezz.shile.server;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import com.realseezz.shile.common.ShileState;
+import com.realseezz.shile.common.network.MiniGameEndPacket;
+import com.realseezz.shile.common.network.MiniGameFailedPacket;
 import com.realseezz.shile.common.network.MiniGameStartedPacket;
 import com.realseezz.shile.common.network.PlayerLookedAtPacket;
 
@@ -32,8 +35,20 @@ public final class ShileServerNetwork {
 			ServerPlayNetworking.send(player, new MiniGameStartedPacket(""));
 			// GEÇİCİ: mini oyun henüz yok.
 			player.sendSystemMessage(Component.literal(
-				"Bakış algılandı: mini oyun başladı, açık ekranlar kapatıldı (oyunun kendisi henüz yazılmadı). Durum: "
-					+ state.state().label() + "."));
+				"Bakış algılandı: mini oyun başladı. Durum: " + state.state().label() + "."));
+		});
+
+		// Client mini oyunda başarısız oldu (süre doldu ya da yanlış tuş).
+		ServerPlayNetworking.registerGlobalReceiver(MiniGameFailedPacket.TYPE, (payload, context) -> {
+			ServerPlayer player = context.player();
+			ShilePlayerState state = ShileManager.get(player.getUUID());
+			if (state.state() != ShileState.MINI_GAME) {
+				return;
+			}
+			// Plan 12: başarısızlıkta yeni rastgele cooldown başlar (ölüm ekranında sayaç durur), oyuncu ani ölür.
+			state.startCooldown();
+			ServerPlayNetworking.send(player, new MiniGameEndPacket(false));
+			player.kill((ServerLevel) player.level());
 		});
 	}
 }

@@ -1,5 +1,6 @@
 package com.realseezz.shile.client;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
@@ -32,6 +33,14 @@ public class ShileClientMod implements ClientModInitializer {
 			ShileClientState.spawnBehind(player.getYRot());
 		});
 
+		// Mini oyun sırasında tüm tuş ve tıklamalar engellenir (hareket, envanter, sohbet, saldırı, F5...).
+		// Tick başında sıfırlanır, böylece oyun mantığı basılı tuşları hiç görmez. Mouse ile bakmak etkilenmez.
+		ClientTickEvents.START_CLIENT_TICK.register(client -> {
+			if (MiniGameState.isActive()) {
+				KeyMapping.releaseAll();
+			}
+		});
+
 		// Mini oyun başlarken açık tüm ekranlar (envanter, sandık, chat vb.) kapatılır (plan 11).
 		ClientPlayNetworking.registerGlobalReceiver(MiniGameStartedPacket.TYPE, (payload, context) -> {
 			Minecraft client = context.client();
@@ -55,6 +64,7 @@ public class ShileClientMod implements ClientModInitializer {
 			if (player != null) {
 				ShileClientState.tick(player.getYRot());
 				GazeDetector.tick(player);
+				MiniGameState.tick();
 			}
 		});
 

@@ -30,6 +30,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 
+import com.realseezz.shile.client.MiniGameState;
 import com.realseezz.shile.client.ShileClientState;
 import com.realseezz.shile.common.ShileConstants;
 
@@ -70,6 +71,8 @@ public final class ShileRenderer {
 
 	private static void extract(LevelExtractionContext context) {
 		Minecraft client = Minecraft.getInstance();
+		// Her karede çağrıldığı için mini oyun tuş yoklaması da burada yapılır (kısa basışlar kaçmasın).
+		MiniGameState.pollInput(client);
 		if (!ShileClientState.isActive() || client.player == null) {
 			renderState = null;
 			return;

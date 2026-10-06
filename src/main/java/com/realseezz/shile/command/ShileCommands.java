@@ -87,6 +87,7 @@ public final class ShileCommands {
 	private static String describe(ShilePlayerState state) {
 		return switch (state.state()) {
 			case ACTIVE -> "Aktif (kalan olay süresi: " + ticksToText(state.eventTicksRemaining()) + ")";
+			case MINI_GAME -> "Mini oyun (kalan süre: " + ticksToText(state.miniGameTicksRemaining()) + ")";
 			case COOLDOWN -> "Cooldown (kalan: " + ticksToText(state.cooldownTicksRemaining()) + ")";
 			default -> state.state().label();
 		};

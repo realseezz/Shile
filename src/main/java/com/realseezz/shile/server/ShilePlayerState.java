@@ -14,6 +14,8 @@ public final class ShilePlayerState {
 		NONE,
 		/** 30 saniyelik olay süresi doldu, Shile kayboldu, cooldown başladı. */
 		EVENT_EXPIRED,
+		/** Mini oyunun 15 saniyesi hatasız doldu: başarı, Shile kayboldu, cooldown başladı. */
+		MINI_GAME_SUCCEEDED,
 		/** Cooldown bitti. */
 		COOLDOWN_FINISHED
 	}
@@ -22,6 +24,9 @@ public final class ShilePlayerState {
 
 	/** Yalnızca ACTIVE iken anlamlı. */
 	private int eventTicksRemaining;
+
+	/** Yalnızca MINI_GAME iken anlamlı. */
+	private int miniGameTicksRemaining;
 
 	/** Yalnızca COOLDOWN iken anlamlı. */
 	private int cooldownTicksRemaining;
@@ -32,6 +37,10 @@ public final class ShilePlayerState {
 
 	public int eventTicksRemaining() {
 		return eventTicksRemaining;
+	}
+
+	public int miniGameTicksRemaining() {
+		return miniGameTicksRemaining;
 	}
 
 	public int cooldownTicksRemaining() {
@@ -62,6 +71,7 @@ public final class ShilePlayerState {
 		if (state == ShileState.ACTIVE) {
 			state = ShileState.MINI_GAME;
 			eventTicksRemaining = 0;
+			miniGameTicksRemaining = ShileConstants.MINI_GAME_DURATION_TICKS;
 		}
 	}
 
@@ -69,6 +79,7 @@ public final class ShilePlayerState {
 	public void startCooldown() {
 		state = ShileState.COOLDOWN;
 		eventTicksRemaining = 0;
+		miniGameTicksRemaining = 0;
 		cooldownTicksRemaining = ThreadLocalRandom.current()
 			.nextInt(ShileConstants.COOLDOWN_MIN_TICKS, ShileConstants.COOLDOWN_MAX_TICKS + 1);
 	}
@@ -80,6 +91,12 @@ public final class ShilePlayerState {
 			if (eventTicksRemaining <= 0) {
 				startCooldown();
 				return TickResult.EVENT_EXPIRED;
+			}
+		} else if (state == ShileState.MINI_GAME) {
+			miniGameTicksRemaining--;
+			if (miniGameTicksRemaining <= 0) {
+				startCooldown();
+				return TickResult.MINI_GAME_SUCCEEDED;
 			}
 		} else if (state == ShileState.COOLDOWN) {
 			cooldownTicksRemaining--;
@@ -99,12 +116,14 @@ public final class ShilePlayerState {
 		}
 		state = ShileState.IDLE;
 		eventTicksRemaining = 0;
+		miniGameTicksRemaining = 0;
 	}
 
 	/** Her şeyi (olay ve cooldown dahil) sıfırlar. */
 	public void reset() {
 		state = ShileState.IDLE;
 		eventTicksRemaining = 0;
+		miniGameTicksRemaining = 0;
 		cooldownTicksRemaining = 0;
 	}
 }

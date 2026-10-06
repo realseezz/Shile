@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -43,9 +44,14 @@ public final class ShileManager {
 			if (player == null || !player.isAlive()) {
 				continue;
 			}
-			if (entry.getValue().tick() == ShilePlayerState.TickResult.EVENT_EXPIRED) {
+			ShilePlayerState.TickResult result = entry.getValue().tick();
+			if (result == ShilePlayerState.TickResult.EVENT_EXPIRED) {
 				// Shile kayboldu: client görseli temizlesin.
 				ServerPlayNetworking.send(player, new MiniGameEndPacket(false));
+			} else if (result == ShilePlayerState.TickResult.MINI_GAME_SUCCEEDED) {
+				ServerPlayNetworking.send(player, new MiniGameEndPacket(true));
+				// GEÇİCİ mesaj.
+				player.sendSystemMessage(Component.literal("Mini oyun başarılı: Shile kayboldu, cooldown başladı."));
 			}
 		}
 	}

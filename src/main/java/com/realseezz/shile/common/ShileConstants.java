@@ -33,9 +33,9 @@ public final class ShileConstants {
 	// --- Mini oyun ---
 	public static final int MINI_GAME_MIN_VISIBLE_KEYS = 2;
 	public static final int MINI_GAME_MAX_VISIBLE_KEYS = 3;
-	/** Her tuş için süre (1 saniye). */
-	public static final int KEY_DURATION_TICKS = 1 * TICKS_PER_SECOND;
-	/** Bir tuş tamamlandıktan sonra yenisi için boşluk (0,5 saniye). */
+	/** Her tuş için süre (2 saniye; kullanıcı kararıyla Antigravity'deki 1 saniyeden yükseltildi). */
+	public static final int KEY_DURATION_TICKS = 2 * TICKS_PER_SECOND;
+	/** Yeni bir tuşun eklenme aralığı (0,5 saniye). */
 	public static final int KEY_GAP_TICKS = TICKS_PER_SECOND / 2;
 	/** Mini oyunda dayanılması gereken süre (15 saniye). */
 	public static final int MINI_GAME_DURATION_TICKS = 15 * TICKS_PER_SECOND;

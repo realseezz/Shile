@@ -50,7 +50,9 @@ public final class ShileHudOverlay {
 			int y = row * SLOT_SIZE;
 
 			graphics.fill(x, y, x + SLOT_SIZE, y + SLOT_SIZE, 0xCC202020);
-			graphics.outline(x, y, SLOT_SIZE, SLOT_SIZE, 0xFFFFFFFF);
+			// Süresi azalan tuşun çerçevesi kırmızıya döner.
+			int outline = key.ticksRemaining() <= 10 ? 0xFFFF4040 : 0xFFFFFFFF;
+			graphics.outline(x, y, SLOT_SIZE, SLOT_SIZE, outline);
 			// Harf yaklaşık ortalanır (yazı tipi genişliği yerine sabit tahmin, yer tutucu).
 			graphics.text(client.font, String.valueOf(key.letter()),
 				x + (SLOT_SIZE - 6) / 2, y + (SLOT_SIZE - 8) / 2, 0xFFFFFFFF, false);
