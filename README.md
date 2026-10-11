@@ -58,7 +58,7 @@ Inspired by the entity Alma from Roblox DOORS, Shile introduces psychological te
 
 ---
 
-## Lisans
+## License
 
-Bu proje MIT lisansı ile yayınlanmıştır. Lisans, projedeki tüm dosyaları (kod, resim ve ses dosyaları) kapsar. Ayrıntı için LICENSE dosyasına bak.
+This project is released under the MIT license. The license covers all files in the project (code, image, and audio files). See the LICENSE file for details.
 
