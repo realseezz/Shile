@@ -8,7 +8,7 @@
 	"contact": {
 		"sources": "https://github.com/realseezz/Shile"
 	},
-	"license": "All-Rights-Reserved",
+	"license": "MIT",
 	"environment": "*",
 	"entrypoints": {
 		"main": ["com.realseezz.shile.ShileMod"],

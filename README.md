@@ -55,3 +55,10 @@ Inspired by the entity Alma from Roblox DOORS, Shile introduces psychological te
 ## Developer
 - Author: realseezz
 - Status: Active Development (server state foundation)
+
+---
+
+## Lisans
+
+Bu proje MIT lisansı ile yayınlanmıştır. Lisans, projedeki tüm dosyaları (kod, resim ve ses dosyaları) kapsar. Ayrıntı için LICENSE dosyasına bak.
+
